@@ -15,3 +15,5 @@ use App\Http\Controllers\LandingpageController;
 */
 
 Route::get('/', [LandingpageController::class, 'index'])->name('index');
+
+Route::get('/scan_table', [LandingpageController::class, 'scan_table'])->name('scan_table');

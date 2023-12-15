@@ -12,4 +12,10 @@ class LandingpageController extends Controller
 
 		return view('landingpage.index');
 	}
+
+	public function scan_table()
+	{
+
+		return view('landingpage.order.scan');
+	}
 }

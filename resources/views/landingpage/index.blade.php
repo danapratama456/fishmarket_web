@@ -16,7 +16,7 @@ Fishmarket
         </h2>
       </div>
        <div class="btn-box">
-        <a href="">
+        <a href="{{ route('scan_table') }}">
           Pesan Menu
         </a>
       </div>
