@@ -75,92 +75,92 @@
 
 
                       <a href="#" data-toggle="modal" onclick="deleteData({{$data->id}})" data-target="#DeleteModal">
-                        <button class="btn btn-danger btn-sm"  title="Hapus">Hapus</button>
-                      </td>
+                        <button class="btn btn-danger btn-sm" title="Hapus">Hapus</button>
+                    </td>
 
-                      <td style="display: none;">{{$data->id}}</td>
-                    </tr>
-                    @endforeach
-                  </tbody>
-                </table>
-              </div>
+                    <td style="display: none;">{{$data->id}}</td>
+                  </tr>
+                  @endforeach
+                </tbody>
+              </table>
             </div>
           </div>
-          <div class="col-md-3 ">
-          </div>
+        </div>
+        <div class="col-md-3 ">
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
 
 
 
-    <!-- Modal Tambah -->
-    <div class="modal fade" id="ModalTambah" tabindex="-1" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="myLargeModalLabel">Tambah Menu</h5>
-          </div>
-          <div class="modal-body">
-           <form method="post" action="{{route('upload_menu_add')}}" enctype="multipart/form-data">
+  <!-- Modal Tambah -->
+  <div class="modal fade" id="ModalTambah" tabindex="-1" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="myLargeModalLabel">Tambah Menu</h5>
+        </div>
+        <div class="modal-body">
+          <form method="post" action="{{route('upload_menu_add')}}" enctype="multipart/form-data">
 
             {{csrf_field()}}
 
 
             <div class="form-group">
               <label for="name">nama Menu</label>
-              <input type="text" class="form-control" id="name" name="name"  required=""></input>
+              <input type="text" class="form-control" id="name" name="name" required=""></input>
             </div>
 
             <div class="form-group">
               <label for="price">price Menu</label>
-              <input type="text" class="form-control" id="price" name="price"  required=""></input>
+              <input type="text" class="form-control" id="price" name="price" required=""></input>
             </div>
 
             <div class="form-group">
               <label for="image">image Menu</label>
-              <input type="file" class="form-control" id="image" name="image"  required=""></input>
+              <input type="file" class="form-control" id="image" name="image" required=""></input>
             </div>
 
 
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-primary" type="Submit">Tambahkan</button>
-            <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" type="Submit">Tambahkan</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
 
-          </div>
+        </div>
         </form>
       </div>
     </div>
   </div>
   <!-- end about section -->
 
-  
-  
 
-<!-- Modal -->
-<div class="modal fade" id="DeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Hapus Data Ini?</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="DeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Hapus Data Ini?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="" id="deleteForm" method="post">
+
+            {{ csrf_field() }}
+            {{ method_field('POST') }}
+            <p>Apakah anda yakin ingin menghapus Menu ini ?</p> <button type="button" class="btn btn-secondary float-right" data-dismiss="modal">Batal</button>
+            <button type="submit" name="" class="btn btn-danger float-right mr-2" data-dismiss="modal" onclick="formSubmit()">Hapus</button>
+
+          </form>
+        </div>
+
       </div>
-      <div class="modal-body">
-        <form action="" id="deleteForm" method="post">
-
-          {{ csrf_field() }}
-          {{ method_field('POST') }}
-          <p>Apakah anda yakin ingin menghapus Menu ini ?</p> <button type="button" class="btn btn-secondary float-right" data-dismiss="modal">Batal</button>
-          <button type="submit" name="" class="btn btn-danger float-right mr-2" data-dismiss="modal" onclick="formSubmit()">Hapus</button>
-
-        </form>
-      </div>
-
     </div>
   </div>
-</div>
 
 
 
@@ -202,26 +202,30 @@
 
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
   <script type="text/javascript">
-
     function onScanSuccess(decodedText, decodedResult) {
-          // handle the scanned code as you like, for example:
-          document.getElementById('kode_produk_form').value = decodedText;
+      // handle the scanned code as you like, for example:
+      document.getElementById('kode_produk_form').value = decodedText;
+    }
+
+    function onScanFailure(error) {
+      // handle scan failure, usually better to ignore and keep scanning.
+      // for example:
+      // console.warn(`Code scan error = ${error}`);
+    }
+
+    let html5QrcodeScanner = new Html5QrcodeScanner(
+      "reader", {
+        fps: 10,
+        qrbox: {
+          width: 250,
+          height: 250
         }
+      },
+      /* verbose= */
+      false);
+    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+  </script>
 
-        function onScanFailure(error) {
-          // handle scan failure, usually better to ignore and keep scanning.
-          // for example:
-          // console.warn(`Code scan error = ${error}`);
-        }
+</body>
 
-        let html5QrcodeScanner = new Html5QrcodeScanner(
-          "reader",
-          { fps: 10, qrbox: {width: 250, height: 250} },
-          /* verbose= */ false);
-        html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-      </script>
-
-    </body>
-
-    </html>
-
+</html>
