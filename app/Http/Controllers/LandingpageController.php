@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Menu;
+use App\Models\MenuCategory;
 
 class LandingpageController extends Controller
 {
-    //
-    public function index()
+	//
+	public function index()
 	{
 
 		return view('landingpage.index');
@@ -26,9 +27,10 @@ class LandingpageController extends Controller
 	public function upload_menu()
 	{
 
-		$menu = Menu::orderBy('id', 'DESC')->where('is_deleted','0')->get();
+		$menu = Menu::orderBy('id', 'DESC')->where('is_deleted', '0')->get();
+		$menu_categories = MenuCategory::orderBy('id', 'DESC')->where('is_deleted', '0')->get();
 
-		return view('landingpage.upload_menu.upload', compact('menu'));
+		return view('landingpage.upload_menu.upload', compact('menu', 'menu_categories'));
 	}
 
 
@@ -38,10 +40,10 @@ class LandingpageController extends Controller
 		// $kode_produk = mt_rand(1000000000, 9999999999);
 		$data_add = new Menu();
 		$data_add->id_restaurant = '1';
-		$data_add->id_category = '1';
+		$data_add->id_category = $request->input('kategori');
 		$data_add->name = $request->input('name');
 		$data_add->price = $request->input('price');
-		
+
 		$data_add->is_deleted = '0';
 
 		if ($request->hasFile('image')) {
@@ -66,9 +68,9 @@ class LandingpageController extends Controller
 
 		$input = [
 			'is_deleted' => '1',
-			
+
 		];
-		
+
 		$data_update->update($input);
 
 

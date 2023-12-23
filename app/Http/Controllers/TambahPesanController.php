@@ -17,6 +17,15 @@ class TambahPesanController extends Controller
             ->get();
         return view('landingpage.order.order_makanan', compact('menu'));
     }
+    public function pilih_minuman()
+    {
+
+        $menu = Menu::orderBy('id', 'DESC')
+            ->where('is_deleted', '0')
+            ->where('id_category', '2')
+            ->get();
+        return view('landingpage.order.order_makanan', compact('menu'));
+    }
     public function order()
     {
         return view('landingpage.order.order_makanan');
