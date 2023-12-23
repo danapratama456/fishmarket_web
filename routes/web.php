@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LandingpageController;
+use App\Http\Controllers\TambahPesanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,3 +25,8 @@ Route::get('/menu/{id_table}', [LandingpageController::class, 'menu'])->name('me
 Route::get('/upload_menu', [LandingpageController::class, 'upload_menu'])->name('upload_menu');
 Route::post('/upload_menu_add', [LandingpageController::class, 'upload_menu_add'])->name('upload_menu_add');
 Route::post('/upload_menu_delete/{id}', [LandingpageController::class, 'upload_menu_delete'])->name('upload_menu_delete');
+
+
+Route::get('/pilih_makanan', [TambahPesanController::class, 'pilih_makanan'])->name('pilih_makanan');
+Route::get('/pilih_minuman', [TambahPesanController::class, 'pilih_minuman'])->name('pilih_minuman');
+Route::post('/pesan_menu', [TambahPesanController::class, 'pesan_menu'])->name('pesan_menu');
