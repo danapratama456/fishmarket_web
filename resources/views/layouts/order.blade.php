@@ -69,8 +69,9 @@
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
 
-        <div class="offcanvas-body">
+        <div class="offcanvas-body container">
             test
+            <div class="order-items" id="order-items"></div>
         </div>
     </div>
     <!-- footer section -->
@@ -173,7 +174,32 @@
         // let id_meja = localStorage.getItem('kode_meja')
         // document.getElementById('id_meja').innerHTML = id_meja
         function tambahCart(dataId, dataName, dataImage, dataPrice) {
+            const orderItem = {
+                id: dataId,
+                name: dataName,
+                image: dataImage,
+                price: dataPrice,
+                quantity: 1
+            }
 
+            // Get localStorage Data
+            let orderList = JSON.parse(localStorage.getItem('orderList')) || [];
+
+            // Cek apakah pesanan sudah ada dalam daftar
+            const existingItemIndex = orderList.findIndex(item => item.id === dataId);
+
+            if (existingItemIndex !== -1) {
+                // Jika pesanan sudah ada, tingkatkan jumlahnya
+                orderList[existingItemIndex].quantity++;
+            } else {
+                // Jika pesanan belum ada, tambahkan ke daftar
+                orderList.push(orderItem);
+            }
+
+            localStorage.setItem('orderList', JSON.stringify(orderList));
+
+            // Tampilkan pesanan di daftar pesanan
+            tampilCart();
         }
 
         function tampilCart() {
@@ -189,7 +215,7 @@
                 listItem.classList.add('order-item');
 
                 listItem.innerHTML = `
-                        ${item.name} (${item.type}) - Quantity: ${item.quantity}
+                        ${item.name} - Quantity: ${item.quantity}
                         <button onclick="removeFromOrder(${item.id})">Remove</button>
                         `;
 
