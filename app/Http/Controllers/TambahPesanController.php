@@ -19,7 +19,6 @@ class TambahPesanController extends Controller
     }
     public function pilih_minuman()
     {
-
         $menu = Menu::orderBy('id', 'DESC')
             ->where('is_deleted', '0')
             ->where('id_category', '2')

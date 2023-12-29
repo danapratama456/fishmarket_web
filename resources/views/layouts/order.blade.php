@@ -29,9 +29,9 @@
     <link href="public/assets_landingpage/css/font-awesome.min.css" rel="stylesheet" />
 
     <!-- Custom styles for this template -->
-    <link href="public/assets_landingpage/css/style.css" rel="stylesheet" />
     <!-- responsive style -->
     <link href="public/assets_landingpage/css/responsive.css" rel="stylesheet" />
+    <link href="public/assets_landingpage/css/style.css" rel="stylesheet" />
 
     <title> Fishmarket Mandar </title>
     <style>
@@ -41,6 +41,12 @@
             right: 10px;
             z-index: 1000;
             /* Ensure it appears above other elements */
+        }
+
+        button {
+            background-color: #ffbe33;
+            color: #ffffff;
+            border: 0;
         }
     </style>
 </head>
@@ -56,22 +62,17 @@
             aria-controls="offcanvasBottom">Cart</button>
     </div>
 
-    <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
+    <div class="offcanvas offcanvas-bottom" style="height: 50vh" tabindex="-1" id="offcanvasBottom"
+        aria-labelledby="offcanvasBottomLabel">
         <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasBottomLabel">Offcanvas bottom</h5>
+            <h5 class="offcanvas-title" id="offcanvasBottomLabel">Pesanan anda</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
 
-        <div class="offcanvas-body small">
-            ID Meja
-            <div class="" id="id_meja">Hello world</div>
-
+        <div class="offcanvas-body">
+            test
         </div>
     </div>
-
-
-
-
     <!-- footer section -->
     <footer class="footer_section">
         <div class="container">
@@ -143,14 +144,6 @@
                     </p>
                 </div>
             </div>
-            <div class="footer-info">
-                <p>
-                    &copy; <span id="displayYear"></span> All Rights Reserved By
-                    <a href="https://html.design/">Free Html Templates</a><br><br>
-                    &copy; <span id="displayYear"></span> Distributed By
-                    <a href="https://themewagon.com/" target="_blank">ThemeWagon</a>
-                </p>
-            </div>
         </div>
     </footer>
     <!-- footer section -->
@@ -177,12 +170,34 @@
     </script>
     <!-- End Google Map -->
     <script>
-        let id_meja = localStorage.getItem('kode_meja')
-        document.getElementById('id_meja').innerHTML = id_meja
+        // let id_meja = localStorage.getItem('kode_meja')
+        // document.getElementById('id_meja').innerHTML = id_meja
+        function tambahCart(dataId, dataName, dataImage, dataPrice) {
+
+        }
+
+        function tampilCart() {
+            const orderList = JSON.parse(localStorage.getItem('orderList')) || [];
+            const orderItemsElement = document.getElementById('order-items');
+
+            // Bersihkan daftar pesanan sebelum menambahkan yang baru
+            orderItemsElement.innerHTML = '';
+
+            // Tambahkan pesanan ke daftar pesanan
+            orderList.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.classList.add('order-item');
+
+                listItem.innerHTML = `
+                        ${item.name} (${item.type}) - Quantity: ${item.quantity}
+                        <button onclick="removeFromOrder(${item.id})">Remove</button>
+                        `;
+
+                orderItemsElement.appendChild(listItem);
+            });
+        }
+        tampilCart();
     </script>
-
-
-
 </body>
 
 </html>
