@@ -271,7 +271,6 @@
 
             // Cek apakah pesanan sudah ada dalam daftar
             const existingItemIndex = orderList.findIndex(item => item.id === dataId);
-            console.log(existingItemIndex)
 
             if (existingItemIndex !== -1) {
                 // Jika pesanan sudah ada, tingkatkan jumlahnya
