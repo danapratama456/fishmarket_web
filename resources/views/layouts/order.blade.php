@@ -44,9 +44,85 @@
         }
 
         button {
-            background-color: #ffbe33;
-            color: #ffffff;
-            border: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 100%;
+            background: #ffbe33;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            color: white
+        }
+
+        button svg {
+            color: #fff;
+        }
+
+        /* .order-items {
+            overflow-y: scroll
+        } */
+
+        .order-card {
+            height: 100px;
+            border: 1px solid hsl(41, 50%, 70%);
+            border-radius: 10px;
+            display: flex;
+            margin-bottom: 10px;
+            padding-left: 10px;
+            padding-right: 10px
+        }
+
+        .order-card img {
+            width: 75px;
+            height: 75px;
+            object-fit: cover;
+            border-radius: 2px;
+            margin: auto
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            margin: 0 5px;
+            font-size: 16px;
+        }
+
+        .order-details {
+            flex: 1;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center
+        }
+
+        .order-name {
+            flex: 1;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center
+        }
+
+        .order-quantity {
+            display: flex;
+            flex-direction: row
+        }
+
+        @media (max-width: 767px) {
+            .order-name {
+                flex-direction: column;
+                justify-content: center;
+            }
+        }
+
+        .btn {
+            width: auto
         }
     </style>
 </head>
@@ -57,20 +133,19 @@
     @yield('content')
 
     <!-- cart section -->
-    <div class="bottom-right-button">
+    <div class="bottom-right-button btn">
         <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom"
             aria-controls="offcanvasBottom">Cart</button>
     </div>
 
-    <div class="offcanvas offcanvas-bottom" style="height: 50vh" tabindex="-1" id="offcanvasBottom"
+    <div class="offcanvas offcanvas-bottom" style="height: 60vh" tabindex="-1" id="offcanvasBottom"
         aria-labelledby="offcanvasBottomLabel">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasBottomLabel">Pesanan anda</h5>
+        <div class="offcanvas-header container">
+            <h5 class="offcanvas-title" id="offcanvasBottomLabel">Pesanan Anda</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
 
         <div class="offcanvas-body container">
-            test
             <div class="order-items" id="order-items"></div>
         </div>
     </div>
@@ -211,13 +286,28 @@
 
             // Tambahkan pesanan ke daftar pesanan
             orderList.forEach(item => {
-                const listItem = document.createElement('li');
+                const listItem = document.createElement('div');
                 listItem.classList.add('order-item');
 
                 listItem.innerHTML = `
-                        ${item.name} - Quantity: ${item.quantity}
-                        <button onclick="removeFromOrder(${item.id})">Remove</button>
-                        `;
+                <div class="order-card">
+                    <img src="uploads/menu/${item.image}" alt="Food Image">
+                    <div class="order-details">
+                        <div class="order-name">
+                            <span>${item.name}</span>
+                            <div class="order-quantity">
+                                <button class="quantity-btn">-</button>
+                                <span>${item.quantity}</span>
+                                <button class="quantity-btn">+</button>
+                            </div>
+                        </div>
+                        <div class="">
+                            <p>Harga:</p>
+                            <span>Rp. ${item.price}</span>
+
+                        </div>
+                    </div>
+                </div>`;
 
                 orderItemsElement.appendChild(listItem);
             });
