@@ -17,7 +17,6 @@ class LandingpageController extends Controller
 
 	public function scan_table()
 	{
-
 		return view('landingpage.order.scan');
 	}
 
@@ -62,13 +61,10 @@ class LandingpageController extends Controller
 
 	public function upload_menu_delete(Request $request, $id)
 	{
-
-
 		$data_update = Menu::where('id', $id)->first();
 
 		$input = [
 			'is_deleted' => '1',
-
 		];
 
 		$data_update->update($input);
