@@ -72,10 +72,14 @@
             height: 100px;
             border: 1px solid hsl(41, 50%, 70%);
             border-radius: 10px;
-            display: flex;
             margin-bottom: 10px;
             padding-left: 10px;
-            padding-right: 10px
+            padding-right: 10px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: 1fr;
+            grid-column-gap: 0px;
+
         }
 
         .order-card img {
@@ -83,7 +87,8 @@
             height: 75px;
             object-fit: cover;
             border-radius: 2px;
-            margin: auto
+            margin: auto;
+            grid-area: 1 / 1 / 2 / 2;
         }
 
         .quantity-btn {
@@ -94,15 +99,19 @@
         }
 
         .order-details {
-            flex: 1;
+            /* flex: 1; */
             padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center
+            display: grid;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: 1fr;
+            grid-column-gap: 0px;
+            align-items: center;
+            grid-area: 1 / 2 / 2 / 5;
         }
 
         .order-name {
-            flex: 1;
+            /* flex: 1; */
             padding: 10px;
             display: flex;
             justify-content: space-between;
@@ -277,6 +286,38 @@
             tampilCart();
         }
 
+        function kurangItem(dataId) {
+            let orderList = JSON.parse(localStorage.getItem('orderList')) || [];
+
+            const existingItemIndex = orderList.findIndex(item => item.id === dataId);
+            if (existingItemIndex !== -1) {
+                // Jika pesanan sudah ada, tingkatkan jumlahnya
+                if (orderList[existingItemIndex].quantity > 1) {
+                    orderList[existingItemIndex].quantity--
+                } else {
+                    orderList.splice(existingItemIndex, 1);
+                }
+                localStorage.setItem('orderList', JSON.stringify(orderList));
+                tampilCart();
+            };
+        }
+
+        function tambahItem(dataId) {
+            let orderList = JSON.parse(localStorage.getItem('orderList')) || [];
+
+            const existingItemIndex = orderList.findIndex(item => item.id === dataId);
+
+            if (existingItemIndex !== -1) {
+                // Jika pesanan sudah ada, tingkatkan jumlahnya
+                orderList[existingItemIndex].quantity++;
+            }
+
+            localStorage.setItem('orderList', JSON.stringify(orderList));
+
+            // Tampilkan pesanan di daftar pesanan
+            tampilCart();
+        }
+
         function tampilCart() {
             const orderList = JSON.parse(localStorage.getItem('orderList')) || [];
             const orderItemsElement = document.getElementById('order-items');
@@ -296,9 +337,9 @@
                         <div class="order-name">
                             <span>${item.name}</span>
                             <div class="order-quantity">
-                                <button class="quantity-btn">-</button>
+                                <button onClick="kurangItem(${item.id})" class="quantity-btn">-</button>
                                 <span>${item.quantity}</span>
-                                <button class="quantity-btn">+</button>
+                                <button onClick="tambahItem(${item.id})" class="quantity-btn">+</button>
                             </div>
                         </div>
                         <div class="">
