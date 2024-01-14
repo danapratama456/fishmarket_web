@@ -33,7 +33,7 @@
     <link href="public/assets_landingpage/css/responsive.css" rel="stylesheet" />
     <link href="public/assets_landingpage/css/style.css" rel="stylesheet" />
 
-    <title> Fishmarket Mandar </title>
+    <title> Fishmarket Mandar @yield('title')</title>
     <style>
         .bottom-right-button {
             position: fixed;
@@ -134,30 +134,16 @@
             width: auto
         }
     </style>
+    @yield('style')
 </head>
 
 <body>
     <!-- food section -->
 
     @yield('content')
+    @yield('cart')
 
-    <!-- cart section -->
-    <div class="bottom-right-button btn">
-        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom"
-            aria-controls="offcanvasBottom">Cart</button>
-    </div>
 
-    <div class="offcanvas offcanvas-bottom" style="height: 60vh" tabindex="-1" id="offcanvasBottom"
-        aria-labelledby="offcanvasBottomLabel">
-        <div class="offcanvas-header container">
-            <h5 class="offcanvas-title" id="offcanvasBottomLabel">Pesanan Anda</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-
-        <div class="offcanvas-body container">
-            <div class="order-items" id="order-items"></div>
-        </div>
-    </div>
     <!-- footer section -->
     <footer class="footer_section">
         <div class="container">
@@ -254,107 +240,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
     </script>
     <!-- End Google Map -->
-    <script>
-        // let id_meja = localStorage.getItem('kode_meja')
-        // document.getElementById('id_meja').innerHTML = id_meja
-        function tambahCart(dataId, dataName, dataImage, dataPrice) {
-            const orderItem = {
-                id: dataId,
-                name: dataName,
-                image: dataImage,
-                price: dataPrice,
-                quantity: 1
-            }
-
-            // Get localStorage Data
-            let orderList = JSON.parse(localStorage.getItem('orderList')) || [];
-
-            // Cek apakah pesanan sudah ada dalam daftar
-            const existingItemIndex = orderList.findIndex(item => item.id === dataId);
-
-            if (existingItemIndex !== -1) {
-                // Jika pesanan sudah ada, tingkatkan jumlahnya
-                orderList[existingItemIndex].quantity++;
-            } else {
-                // Jika pesanan belum ada, tambahkan ke daftar
-                orderList.push(orderItem);
-            }
-
-            localStorage.setItem('orderList', JSON.stringify(orderList));
-
-            // Tampilkan pesanan di daftar pesanan
-            tampilCart();
-        }
-
-        function kurangItem(dataId) {
-            let orderList = JSON.parse(localStorage.getItem('orderList')) || [];
-
-            const existingItemIndex = orderList.findIndex(item => item.id === dataId);
-            if (existingItemIndex !== -1) {
-                // Jika pesanan sudah ada, tingkatkan jumlahnya
-                if (orderList[existingItemIndex].quantity > 1) {
-                    orderList[existingItemIndex].quantity--
-                } else {
-                    orderList.splice(existingItemIndex, 1);
-                }
-                localStorage.setItem('orderList', JSON.stringify(orderList));
-                tampilCart();
-            };
-        }
-
-        function tambahItem(dataId) {
-            let orderList = JSON.parse(localStorage.getItem('orderList')) || [];
-
-            const existingItemIndex = orderList.findIndex(item => item.id === dataId);
-
-            if (existingItemIndex !== -1) {
-                // Jika pesanan sudah ada, tingkatkan jumlahnya
-                orderList[existingItemIndex].quantity++;
-            }
-
-            localStorage.setItem('orderList', JSON.stringify(orderList));
-
-            // Tampilkan pesanan di daftar pesanan
-            tampilCart();
-        }
-
-        function tampilCart() {
-            const orderList = JSON.parse(localStorage.getItem('orderList')) || [];
-            const orderItemsElement = document.getElementById('order-items');
-
-            // Bersihkan daftar pesanan sebelum menambahkan yang baru
-            orderItemsElement.innerHTML = '';
-
-            // Tambahkan pesanan ke daftar pesanan
-            orderList.forEach(item => {
-                const listItem = document.createElement('div');
-                listItem.classList.add('order-item');
-
-                listItem.innerHTML = `
-                <div class="order-card">
-                    <img src="uploads/menu/${item.image}" alt="Food Image">
-                    <div class="order-details">
-                        <div class="order-name">
-                            <span>${item.name}</span>
-                            <div class="order-quantity">
-                                <button onClick="kurangItem(${item.id})" class="quantity-btn">-</button>
-                                <span>${item.quantity}</span>
-                                <button onClick="tambahItem(${item.id})" class="quantity-btn">+</button>
-                            </div>
-                        </div>
-                        <div class="">
-                            <p>Harga:</p>
-                            <span>Rp. ${item.price}</span>
-
-                        </div>
-                    </div>
-                </div>`;
-
-                orderItemsElement.appendChild(listItem);
-            });
-        }
-        tampilCart();
-    </script>
+    @yield('script')
 </body>
 
 </html>
