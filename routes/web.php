@@ -29,7 +29,7 @@ Route::post('/upload_menu_delete/{id}', [LandingpageController::class, 'upload_m
 
 Route::get('/pilih_makanan', [TambahPesanController::class, 'pilih_makanan'])->name('pilih_makanan');
 Route::get('/pilih_minuman', [TambahPesanController::class, 'pilih_minuman'])->name('pilih_minuman');
-Route::post('/get_transaction/{id}', [TambahPesanController::class, 'get_transaction'])->name('get_transaction');
+Route::get('/get_transaction/{id}', [TambahPesanController::class, 'get_transaction'])->name('get_transaction');
 
 Route::get('/detail_transaction', [TambahPesanController::class, 'detail_transaction'])->name('detail_transaction');
 Route::post('/save_transaction', [TambahPesanController::class, 'save_transaction'])->name('save_transaction');

@@ -70,10 +70,24 @@ class TambahPesanController extends Controller
         $transaction = Transaction::where('id_table', $id)
             ->where('status', 'proses')
             ->first();
+
         if ($transaction) {
-            return response()->json($transaction);
+            $transactionDetails = TransactionDetails::where('id_transaction', $transaction->id)
+                ->get();
+            $response = [
+                'orderList' => $transactionDetails,
+                'kodeMeja' => $id,
+            ];
+
+            return response()->json($response);
         } else {
-            return response()->json(['error' => 'Transaction not found'], 404);
+            $response = [
+                'orderList' => [],
+                'kodeMeja' => $id,
+                'error' => 'Transaction not found',
+            ];
+
+            return response()->json($response, 200);
         }
     }
     public function order()

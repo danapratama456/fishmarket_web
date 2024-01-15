@@ -98,8 +98,34 @@
         function onScanSuccess(decodedText, decodedResult) {
             // handle the scanned code as you like, for example:
             // document.getElementById('kode_produk_form').value = decodedText;
-            localStorage.setItem('kode_meja', decodedText);
-            window.location.href = '{{ route('pilih_makanan') }}';
+            if (decodedText) {
+                fetch(`{{ route('index') }}/get_transaction/${decodedText}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Handle the received data
+                        if (data && data.orderList && data.orderList.length > 0) {
+                            // Save the fetched data to localStorage
+                            localStorage.setItem('orderList', JSON.stringify(data.orderList));
+                            localStorage.setItem('kode_meja', decodedText);
+                            console.log('Data saved to localStorage:', data.orderList);
+                            window.location.href = '{{ route('pilih_makanan') }}';
+                        } else {
+                            // If no data, set localStorage to an empty array
+                            localStorage.setItem('orderList', JSON.stringify([]));
+                            console.log('No data, localStorage set to an empty array');
+                            window.location.href = '{{ route('pilih_makanan') }}';
+                        }
+                        // Access data using data.orderList and data.kodeMeja
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data:', error);
+                    });
+            }
         }
 
         function onScanFailure(error) {
