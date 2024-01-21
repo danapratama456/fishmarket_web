@@ -45,39 +45,71 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <div class="mb-5 container">
         <button id="simpan" class="btn-primary" onclick="simpanCart()">Simpan cart</button>
-        <a class="btn-primary" href="{{ route('pilih_makanan') }}">Tambah menu</a>
+        <a id="link" class="btn-primary" href="{{ route('pilih_makanan') }}">Tambah menu</a>
+    </div>
+    <div class="mb-5 container" id="status">
+        {{-- <div class="alert alert-warning">
+            A simple warning alert—check it out!
+        </div> --}}
     </div>
 @endsection
 
 @section('script')
     <script>
         function simpanCart() {
-            const orderList = JSON.parse(localStorage.getItem('orderList')) || [];
-            const kodeMeja = JSON.parse(localStorage.getItem('kode_meja')) || [];
-            const button = document.getElementById("simpan");
+            const isConfirmed = confirm("Apakah anda yakin untuk menambah pesanan?");
 
+            // Check if the user confirmed
+            if (isConfirmed) {
+                const orderList = JSON.parse(localStorage.getItem('orderList')) || [];
+                const kodeMeja = JSON.parse(localStorage.getItem('kode_meja')) || [];
+                // const button = document.getElementById("simpan");
 
-            fetch('{{ route('save_transaction') }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify({
-                        orderList,
-                        kodeMeja
+                fetch('{{ route('save_transaction') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify({
+                            orderList,
+                            kodeMeja
+                        })
+                    }).then(response => response.json())
+                    .then(data => {
+                        console.log(data.message);
+                        if (data) {
+                            alert(data.message)
+                            // button.remove()
+                            localStorage.setItem('statusCart', 'simpan');
+                            deleteButton()
+                        }
                     })
-                }).then(response => response.json())
-                .then(data => {
-                    console.log(data.message);
-                    if (data) {
-                        button.remove()
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    })
+            }
         }
+
+        function deleteButton() {
+            let getStatus = localStorage.getItem('statusCart');
+            const buttonElement = document.getElementById("simpan");
+            const linkElement = document.getElementById("link");
+            const statusElement = document.getElementById("status");
+
+            if (getStatus == 'simpan') {
+                buttonElement.remove()
+                linkElement.remove()
+                const newStatus = document.createElement('div');
+                newStatus.innerHTML = `
+                <div class="alert alert-warning">
+                    Pesanan anda telah dibuat silahkan tunggu
+                </div>
+                `
+                statusElement.appendChild(newStatus)
+            }
+        }
+        deleteButton()
 
         function tampilCart() {
             const orderList = JSON.parse(localStorage.getItem('orderList')) || [];

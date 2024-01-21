@@ -6,6 +6,8 @@ use App\Models\Menu;
 use App\Models\Transaction;
 use App\Models\TransactionDetails;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+// use DB;
 
 class TambahPesanController extends Controller
 {
@@ -37,20 +39,28 @@ class TambahPesanController extends Controller
     {
         $data = $request->all();
         // ddd($data);
+        $latestTransaction = DB::table('transactions')
+            ->where('id_table', $data['kodeMeja'])
+            ->where('status', 'pending')
+            ->latest('created_at')
+            ->first();
 
+        if (!$latestTransaction) {
+            $transaction = new Transaction;
+            $transaction->id_user = $data['kodeMeja']; // Gantilah dengan cara Anda mendapatkan ID pengguna
+            $transaction->id_table = $data['kodeMeja'];
+            $transaction->notes = ''; // Tambahkan catatan jika diperlukan
+            $transaction->total = 0; // Setel total ke default atau hitung dari detail transaksi
+            $transaction->subtotal = 0; // Setel subtotal ke default atau hitung dari detail transaksi
+            $transaction->tax = 0; // Setel pajak ke default atau hitung dari detail transaksi
+            $transaction->status = 'pending'; // Atur status sesuai kebutuhan
+            $transaction->is_deleted = false;
+            $transaction->save();
+            $transactionId = $transaction->id;
+        } else {
+            $transactionId = $latestTransaction->id;
+        }
         // Simpan data ke tabel transactions
-        $transaction = new Transaction;
-        $transaction->id_user = $data['kodeMeja']; // Gantilah dengan cara Anda mendapatkan ID pengguna
-        $transaction->id_table = $data['kodeMeja'];
-        $transaction->notes = ''; // Tambahkan catatan jika diperlukan
-        $transaction->total = 0; // Setel total ke default atau hitung dari detail transaksi
-        $transaction->subtotal = 0; // Setel subtotal ke default atau hitung dari detail transaksi
-        $transaction->tax = 0; // Setel pajak ke default atau hitung dari detail transaksi
-        $transaction->status = 'pending'; // Atur status sesuai kebutuhan
-        $transaction->is_deleted = false;
-        $transaction->save();
-
-        $transactionId = $transaction->id;
 
         // Simpan detail transaksi ke tabel transaction_details
         foreach ($data['orderList'] as $orderItem) {
@@ -68,12 +78,21 @@ class TambahPesanController extends Controller
     public function get_transaction($id)
     {
         $transaction = Transaction::where('id_table', $id)
-            ->where('status', 'proses')
+            ->where('status', 'pending')
+            ->latest('created_at')
+            // ->orderBy('id', 'DESC')
             ->first();
 
         if ($transaction) {
-            $transactionDetails = TransactionDetails::where('id_transaction', $transaction->id)
+            // $transactionDetails = TransactionDetails::where('id_transaction', $transaction->id)
+            //     ->get();
+            $transactionDetails = DB::table('transaction_details')
+                ->join('menus', 'transaction_details.id_menu', 'menus.id')
+                ->where('transaction_details.id_transaction', $transaction->id)
+                ->select('transaction_details.*', 'menus.name', 'menus.image', 'menus.price')
+                ->orderBy('transaction_details.id', 'ASC')
                 ->get();
+
             $response = [
                 'orderList' => $transactionDetails,
                 'kodeMeja' => $id,

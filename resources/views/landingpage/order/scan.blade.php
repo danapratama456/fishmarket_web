@@ -117,6 +117,7 @@
                         } else {
                             // If no data, set localStorage to an empty array
                             localStorage.setItem('orderList', JSON.stringify([]));
+                            console.log(data)
                             console.log('No data, localStorage set to an empty array');
                             window.location.href = '{{ route('pilih_makanan') }}';
                         }
