@@ -32,4 +32,5 @@ Route::get('/pilih_minuman', [TambahPesanController::class, 'pilih_minuman'])->n
 Route::get('/get_transaction/{id}', [TambahPesanController::class, 'get_transaction'])->name('get_transaction');
 
 Route::get('/detail_transaction', [TambahPesanController::class, 'detail_transaction'])->name('detail_transaction');
+Route::get('/invoice', [TambahPesanController::class, 'invoice'])->name('invoice');
 Route::post('/save_transaction', [TambahPesanController::class, 'save_transaction'])->name('save_transaction');

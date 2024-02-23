@@ -68,10 +68,6 @@
 
     <!-- end about section -->
 
-
-
-
-
     <!-- jQery -->
     <script src="public/assets_landingpage/js/jquery-3.4.1.min.js"></script>
     <!-- popper js -->
@@ -110,13 +106,14 @@
                         // Handle the received data
                         if (data && data.orderList && data.orderList.length > 0) {
                             // Save the fetched data to localStorage
-                            localStorage.setItem('orderList', JSON.stringify(data.orderList));
+                            localStorage.setItem('savedOrderList', JSON.stringify(data.orderList));
+                            localStorage.setItem('statusCart', JSON.stringify(data.statusCart));
                             localStorage.setItem('kode_meja', decodedText);
-                            console.log('Data saved to localStorage:', data.orderList);
+                            console.log('Data saved to localStorage:', data.statusCart);
                             window.location.href = '{{ route('pilih_makanan') }}';
                         } else {
                             // If no data, set localStorage to an empty array
-                            localStorage.setItem('orderList', JSON.stringify([]));
+                            localStorage.setItem('savedOrderList', JSON.stringify([]));
                             console.log(data)
                             console.log('No data, localStorage set to an empty array');
                             window.location.href = '{{ route('pilih_makanan') }}';

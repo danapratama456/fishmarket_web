@@ -34,6 +34,10 @@ class TambahPesanController extends Controller
     {
         return view('landingpage.order.order_detail');
     }
+    public function invoice()
+    {
+        return view('landingpage.order.order_invoice');
+    }
 
     public function save_transaction(Request $request)
     {
@@ -66,7 +70,7 @@ class TambahPesanController extends Controller
         foreach ($data['orderList'] as $orderItem) {
             $transactionDetail = new TransactionDetails;
             $transactionDetail->id_transaction = $transactionId;
-            $transactionDetail->id_menu = $orderItem['id'];
+            $transactionDetail->id_menu = $orderItem['id_menu'];
             $transactionDetail->quantity = $orderItem['quantity'];
             $transactionDetail->total_price = $orderItem['price'] * $orderItem['quantity'];
             $transactionDetail->is_deleted = false;
@@ -84,18 +88,17 @@ class TambahPesanController extends Controller
             ->first();
 
         if ($transaction) {
-            // $transactionDetails = TransactionDetails::where('id_transaction', $transaction->id)
-            //     ->get();
-            $transactionDetails = DB::table('transaction_details')
+            $transactionDetails = DB::table('transactions')
+                ->join('transaction_details', 'transactions.id', '=', 'transaction_details.id_transaction')
                 ->join('menus', 'transaction_details.id_menu', 'menus.id')
-                ->where('transaction_details.id_transaction', $transaction->id)
+                ->where('transactions.id', '=', $transaction->id)
                 ->select('transaction_details.*', 'menus.name', 'menus.image', 'menus.price')
-                ->orderBy('transaction_details.id', 'ASC')
                 ->get();
 
             $response = [
                 'orderList' => $transactionDetails,
                 'kodeMeja' => $id,
+                'statusCart' => $transaction->status,
             ];
 
             return response()->json($response);

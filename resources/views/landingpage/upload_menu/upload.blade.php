@@ -198,9 +198,6 @@
             $("#deleteForm").submit();
         }
     </script>
-
-
-
     <!-- jQery -->
     <script src="public/assets_landingpage/js/jquery-3.4.1.min.js"></script>
     <!-- popper js -->

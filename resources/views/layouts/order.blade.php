@@ -27,6 +27,7 @@
         crossorigin="anonymous" />
     <!-- font awesome style -->
     <link href="public/assets_landingpage/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 
     <!-- Custom styles for this template -->
     <!-- responsive style -->
@@ -64,12 +65,8 @@
             color: #fff;
         }
 
-        /* .order-items {
-            overflow-y: scroll
-        } */
-
         .order-card {
-            height: 100px;
+            height: auto;
             border: 1px solid hsl(41, 50%, 70%);
             border-radius: 10px;
             margin-bottom: 10px;
@@ -111,16 +108,9 @@
         }
 
         .order-name {
-            /* flex: 1; */
             padding: 10px;
             display: flex;
             justify-content: space-between;
-            align-items: center
-        }
-
-        .order-quantity {
-            display: flex;
-            flex-direction: row
         }
 
         @media (max-width: 767px) {
@@ -220,7 +210,9 @@
     <!-- footer section -->
 
     <!-- jQery -->
-    <script src="public/assets_landingpage/js/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    {{-- <script src="public/assets_landingpage/js/jquery-3.4.1.min.js"></script> --}}
     <!-- popper js -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
@@ -240,6 +232,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
     </script>
     <!-- End Google Map -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     @yield('script')
 </body>
 
