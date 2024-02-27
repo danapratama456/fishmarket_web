@@ -11,8 +11,9 @@ class LandingpageController extends Controller
 	//
 	public function index()
 	{
+		$menuData = Menu::all();
 
-		return view('landingpage.index');
+		return view('landingpage.index', ['menu' => $menuData]);
 	}
 
 	public function scan_table()
